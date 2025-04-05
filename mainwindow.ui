@@ -41,6 +41,9 @@
       <fontweight>Black</fontweight>
      </font>
     </property>
+    <property name="tabletTracking">
+     <bool>false</bool>
+    </property>
     <property name="text">
      <string>           Задачи</string>
     </property>
@@ -82,18 +85,24 @@
     <property name="title">
      <string>Файл</string>
     </property>
-    <addaction name="action"/>
-    <addaction name="action_2"/>
+    <addaction name="save_action"/>
+    <addaction name="delete_action"/>
    </widget>
    <addaction name="menu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="action">
+  <action name="save_action">
+   <property name="icon">
+    <iconset theme="QIcon::ThemeIcon::DocumentSave"/>
+   </property>
    <property name="text">
     <string>Сохранить</string>
    </property>
   </action>
-  <action name="action_2">
+  <action name="delete_action">
+   <property name="icon">
+    <iconset theme="QIcon::ThemeIcon::EditDelete"/>
+   </property>
    <property name="text">
     <string>Удалить</string>
    </property>

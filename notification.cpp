@@ -26,16 +26,25 @@ Notification::Notification(QWidget *parent)
     connect(tray_icon, &QSystemTrayIcon::activated, this, &Notification::showContextMenu);
 
     // Подключение таймера (вывод уведомления по истечении времени таймера)
-    connect(timer, &QTimer::timeout, this, &Notification::showNotification);
+    //connect(timer, &QTimer::timeout, this, &Notification::showNotification);
 
     // Запуск таймера
     timer->start(10000);
 }
 
-QSystemTrayIcon* Notification::getTrayIcon() const
+Notification::~Notification()
 {
-    return tray_icon;
 }
+
+bool Notification::isTrayIconVisible() const
+{
+    if (tray_icon->isVisible()) {
+        return true;
+    }
+
+    return false;
+}
+
 
 void Notification::showContextMenu(QSystemTrayIcon::ActivationReason reason) const
 {

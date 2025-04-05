@@ -15,8 +15,9 @@ class Notification : public QMainWindow
 
 public:
     explicit Notification(QWidget *parent = nullptr);
+    ~Notification();
 
-    QSystemTrayIcon* getTrayIcon() const;
+    bool isTrayIconVisible() const;
 
 private:
     QTimer*          timer;
