@@ -1,5 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "task.h"
+
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -13,7 +16,11 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Контеккстное меню при нажатии ПКМ на задачу
     ui->tasks_list->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(ui->tasks_list, &QListWidget::customContextMenuRequested, this, &MainWindow::showContextMenu);
+    // connect(ui->tasks_list, &QListWidget::customContextMenuRequested, this, &MainWindow::showContextMenu);
+    connect(ui->tasks_list, &QListView::doubleClicked, this, &MainWindow::showContextMenu);
+
+    // Установка модели для отображения в списке
+    ui->tasks_list->setModel(&tasks);
 }
 
 MainWindow::~MainWindow()
@@ -32,140 +39,147 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::addTask()
 {
-    QString task = ui->task_input->text();
+    QString task_description = ui->task_input->text();
 
-    if (!task.isEmpty()) {
-        QListWidgetItem* item = new QListWidgetItem(task, ui->tasks_list);
-        item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
+    if (!task_description.isEmpty()) {
+        auto* item = new Task(task_description);
+
+        item->setCheckable(true);
         item->setCheckState(Qt::Unchecked);
+
+        tasks.appendRow(item);
 
         ui->task_input->clear();
     }
 }
 
-void MainWindow::showContextMenu()
+void MainWindow::showContextMenu(const QModelIndex& index)
 {
-    QListWidgetItem* item = ui->tasks_list->currentItem();
-    if(!item) return;
+    Task* task = dynamic_cast<Task*>(tasks.item(index.row()));
 
-    QMenu context_menu;
+    QMessageBox::about(this, "gavno", task->description());
 
-    QAction* remind_action = context_menu.addAction("Напоминание");
-    connect(remind_action, &QAction::triggered, this, &MainWindow::setTaskReminder);
+    // QStandardItem* item = ui->tasks_list->currentItem();
+    // if(!item) return;
+
+    // QMenu context_menu;
+
+    // QAction* remind_action = context_menu.addAction("Напоминание");
+    // connect(remind_action, &QAction::triggered, this, &MainWindow::setTaskReminder);
 }
 
 void MainWindow::setTaskReminder()
 {
-    QListWidgetItem* item = ui->tasks_list->currentItem();
-    if(!item) return;
+//     QListWidgetItem* item = ui->tasks_list->currentItem();
+//     if(!item) return;
 
-    QDialog dialog(this);
-    dialog.setWindowTitle("Установить напоминание");
-    dialog.setFixedSize(400, 350);
+//     QDialog dialog(this);
+//     dialog.setWindowTitle("Установить напоминание");
+//     dialog.setFixedSize(400, 350);
 
-    // Стиль для спинбоксов с маленькими кнопками
-    QString spinBoxStyle = R"(
-        QSpinBox {
-            font-size: 24px;
-            min-width: 60px;
-            max-width: 60px;
-            min-height: 50px;
-            max-height: 50px;
-            padding: 0;
-            text-align: center;
-        }
-        QSpinBox::up-button, QSpinBox::down-button {
-            width: 20px;
-            height: 24px;
-        }
-        QSpinBox::up-button {
-            subcontrol-position: top right;
-        }
-        QSpinBox::down-button {
-            subcontrol-position: bottom right;
-        }
-    )";
+//     // Стиль для спинбоксов с маленькими кнопками
+//     QString spinBoxStyle = R"(
+//         QSpinBox {
+//             font-size: 24px;
+//             min-width: 60px;
+//             max-width: 60px;
+//             min-height: 50px;
+//             max-height: 50px;
+//             padding: 0;
+//             text-align: center;
+//         }
+//         QSpinBox::up-button, QSpinBox::down-button {
+//             width: 20px;
+//             height: 24px;
+//         }
+//         QSpinBox::up-button {
+//             subcontrol-position: top right;
+//         }
+//         QSpinBox::down-button {
+//             subcontrol-position: bottom right;
+//         }
+//     )";
 
-    // Основной контейнер
-    QWidget* timeContainer = new QWidget(&dialog);
-    QHBoxLayout* timeLayout = new QHBoxLayout(timeContainer);
-    timeLayout->setSpacing(5);
-    timeLayout->setContentsMargins(20, 10, 20, 10);
+//     // Основной контейнер
+//     QWidget* timeContainer = new QWidget(&dialog);
+//     QHBoxLayout* timeLayout = new QHBoxLayout(timeContainer);
+//     timeLayout->setSpacing(5);
+//     timeLayout->setContentsMargins(20, 10, 20, 10);
 
-    // Часы
-    QSpinBox* hoursSpin = new QSpinBox(timeContainer);
-    hoursSpin->setStyleSheet(spinBoxStyle);
-    hoursSpin->setRange(0, 23);
-    hoursSpin->setValue(QTime::currentTime().hour());
-    hoursSpin->setAlignment(Qt::AlignCenter);
+//     // Часы
+//     QSpinBox* hoursSpin = new QSpinBox(timeContainer);
+//     hoursSpin->setStyleSheet(spinBoxStyle);
+//     hoursSpin->setRange(0, 23);
+//     hoursSpin->setValue(QTime::currentTime().hour());
+//     hoursSpin->setAlignment(Qt::AlignCenter);
 
-    // Двоеточие
-    QLabel* colon = new QLabel(":", timeContainer);
-    colon->setStyleSheet("font-size: 24px;");
-    colon->setAlignment(Qt::AlignCenter);
+//     // Двоеточие
+//     QLabel* colon = new QLabel(":", timeContainer);
+//     colon->setStyleSheet("font-size: 24px;");
+//     colon->setAlignment(Qt::AlignCenter);
 
-    // Минуты
-    QSpinBox* minsSpin = new QSpinBox(timeContainer);
-    minsSpin->setStyleSheet(spinBoxStyle);
-    minsSpin->setRange(0, 59);
-    minsSpin->setValue(QTime::currentTime().minute());
-    minsSpin->setAlignment(Qt::AlignCenter);
+//     // Минуты
+//     QSpinBox* minsSpin = new QSpinBox(timeContainer);
+//     minsSpin->setStyleSheet(spinBoxStyle);
+//     minsSpin->setRange(0, 59);
+//     minsSpin->setValue(QTime::currentTime().minute());
+//     minsSpin->setAlignment(Qt::AlignCenter);
 
-    // Добавляем элементы
-    timeLayout->addStretch();
-    timeLayout->addWidget(hoursSpin);
-    timeLayout->addWidget(colon);
-    timeLayout->addWidget(minsSpin);
-    timeLayout->addStretch();
+//     // Добавляем элементы
+//     timeLayout->addStretch();
+//     timeLayout->addWidget(hoursSpin);
+//     timeLayout->addWidget(colon);
+//     timeLayout->addWidget(minsSpin);
+//     timeLayout->addStretch();
 
-    // Календарь
-    QCalendarWidget* calendar = new QCalendarWidget(&dialog);
+//     // Календарь
+//     QCalendarWidget* calendar = new QCalendarWidget(&dialog);
 
-    calendar->setStyleSheet(R"(
-    QCalendarWidget QComboBox {
-        font-size: 18px;
-        font-weight: bold;
-        min-width: 120px;
-        height: 30px;
-    }
+//     calendar->setStyleSheet(R"(
+//     QCalendarWidget QComboBox {
+//         font-size: 18px;
+//         font-weight: bold;
+//         min-width: 120px;
+//         height: 30px;
+//     }
 
-    QCalendarWidget QAbstractItemView {
-        font-size: 14px;
-    }
+//     QCalendarWidget QAbstractItemView {
+//         font-size: 14px;
+//     }
 
-    QCalendarWidget QToolButton {
-        font-size: 16px;
-        min-width: 40px;
-        min-height: 40px;
-    }
-)");
+//     QCalendarWidget QToolButton {
+//         font-size: 16px;
+//         min-width: 40px;
+//         min-height: 40px;
+//     }
+// )");
 
-    calendar->setGridVisible(true);
-    calendar->setVerticalHeaderFormat(QCalendarWidget::NoVerticalHeader);
-    calendar->setHorizontalHeaderFormat(QCalendarWidget::ShortDayNames);
-    calendar->setFirstDayOfWeek(Qt::Monday);
-    calendar->setMinimumDate(QDate::currentDate());
+//     calendar->setGridVisible(true);
+//     calendar->setVerticalHeaderFormat(QCalendarWidget::NoVerticalHeader);
+//     calendar->setHorizontalHeaderFormat(QCalendarWidget::ShortDayNames);
+//     calendar->setFirstDayOfWeek(Qt::Monday);
+//     calendar->setMinimumDate(QDate::currentDate());
 
-    // Подсветка выходных
-    QTextCharFormat weekendFormat;
-    weekendFormat.setForeground(Qt::red);
-    calendar->setWeekdayTextFormat(Qt::Saturday, weekendFormat);
-    calendar->setWeekdayTextFormat(Qt::Sunday, weekendFormat);
+//     // Подсветка выходных
+//     QTextCharFormat weekendFormat;
+//     weekendFormat.setForeground(Qt::red);
+//     calendar->setWeekdayTextFormat(Qt::Saturday, weekendFormat);
+//     calendar->setWeekdayTextFormat(Qt::Sunday, weekendFormat);
 
-    // Кнопки управления
-    QDialogButtonBox* buttonBox = new QDialogButtonBox(
-        QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
-        Qt::Horizontal,
-        &dialog
-        );
+//     // Кнопки управления
+//     QDialogButtonBox* buttonBox = new QDialogButtonBox(
+//         QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
+//         Qt::Horizontal,
+//         &dialog
+//         );
 
-    // Главный layout
-    QVBoxLayout* mainLayout = new QVBoxLayout(&dialog);
-    mainLayout->addWidget(new QLabel("Выберите время:", &dialog));
-    mainLayout->addWidget(timeContainer);
-    mainLayout->addWidget(calendar);
-    mainLayout->addWidget(buttonBox);
+//     // Главный layout
+//     QVBoxLayout* mainLayout = new QVBoxLayout(&dialog);
+//     mainLayout->addWidget(new QLabel("Выберите время:", &dialog));
+//     mainLayout->addWidget(timeContainer);
+//     mainLayout->addWidget(calendar);
+//     mainLayout->addWidget(buttonBox);
 
-    connect(buttonBox, &QDialogButtonBox::accepted, &dialog, &QDialog::accept);
-    connect(buttonBox, &QDialogButtonBox::rejected, &dialog, &QDialog::reject);
+//     connect(buttonBox, &QDialogButtonBox::accepted, &dialog, &QDialog::accept);
+//     connect(buttonBox, &QDialogButtonBox::rejected, &dialog, &QDialog::reject);
 }

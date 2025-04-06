@@ -1,29 +1,21 @@
 #ifndef TASK_H
 #define TASK_H
 
-#include <QMainWindow>
-#include <QObject>
-#include <QWidget>
 #include <QDateTime>
 #include <QListWidget>
+#include <QStandardItem>
 
-class MainWindow;
-
-class Task : public QMainWindow
+class Task : public QStandardItem
 {
-    Q_OBJECT
 public:
-    explicit Task(QWidget *parent, const QListWidgetItem* task);
-    ~Task();
+    explicit Task(QString description);
 
-    void setReminders(Task task);
+    QString description() const;
+    bool isCompleted() const;
 
 private:
-    QString   description;
-    bool      is_completed;
     QDateTime remind_time;
 
-signals:
 };
 
 #endif // TASK_H

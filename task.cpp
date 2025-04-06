@@ -1,17 +1,17 @@
 #include "task.h"
 
-Task::Task(QWidget *parent, const QListWidgetItem* task)
-    : QMainWindow(parent)
+Task::Task(QString description)
+    : QStandardItem(description)
 {
-    parent = nullptr;
 
-    if (task) {
-        description = task->text();
-        is_completed = task->checkState();
-    }
 }
 
-Task::~Task()
+QString Task::description() const
 {
+    return data(Qt::DisplayRole).toString();
+}
 
+bool Task::isCompleted() const
+{
+    return checkState() == Qt::Checked;
 }

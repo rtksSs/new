@@ -2,7 +2,6 @@
 #define MAINWINDOW_H
 
 #include "notification.h"
-#include "task.h"
 
 #include <QMainWindow>
 #include <QLineEdit>
@@ -17,11 +16,9 @@
 #include <QCalendarWidget>
 #include <QDialogButtonBox>
 #include <QVBoxLayout>
-#include <QListWidgetItem>
+#include <QStandardItemModel>
 #include <QDialog>
 #include <QMessageBox>
-
-class Notification;
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -43,12 +40,12 @@ public:
 private:
     Ui::MainWindow* ui;
 
-    Notification    notification;
-    QList<Task>     tasks;
+    Notification       notification;
+    QStandardItemModel tasks;
 
 private slots:
     void addTask();
-    void showContextMenu();
+    void showContextMenu(const QModelIndex&  index);
     void setTaskReminder();
 
 };

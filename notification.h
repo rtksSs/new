@@ -31,8 +31,6 @@ private slots:
     void showNotification() const;
     void exitApplication() const;
 
-signals:
-
 };
 
 #endif // NOTIFICATION_H
