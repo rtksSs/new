@@ -1,7 +1,7 @@
 #include "notification.h"
 
-Notification::Notification(QWidget *parent)
-    : QMainWindow{parent}, icon_img(32, 32)
+Notification::Notification()
+    : icon_img(32, 32)
 {
     // Заполнение изображения иконки цветом
     icon_img.fill(Qt::red);
@@ -14,16 +14,16 @@ Notification::Notification(QWidget *parent)
     tray_icon->setVisible(true);
 
     // Инициализация контекстного меню
-    context_menu = new QMenu();
-    context_menu->addAction("Show", this, &QMainWindow::show);
-    context_menu->addAction("Exit", this, &Notification::exitApplication);
+    // context_menu = new QMenu();
+    // context_menu->addAction("Show", this, &QMainWindow::show);
+    // context_menu->addAction("Exit", this, &Notification::exitApplication);
 
     // Инициализация таймера
     timer = new QTimer{this};
 
     // Установка и подключение контекстного меню
-    tray_icon->setContextMenu(context_menu);
-    connect(tray_icon, &QSystemTrayIcon::activated, this, &Notification::showContextMenu);
+    // tray_icon->setContextMenu(context_menu);
+    // connect(tray_icon, &QSystemTrayIcon::activated, this, &Notification::showContextMenu);
 
     // Подключение таймера (вывод уведомления по истечении времени таймера)
     //connect(timer, &QTimer::timeout, this, &Notification::showNotification);

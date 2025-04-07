@@ -31,21 +31,22 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    MainWindow(QWidget* parent = nullptr);
     ~MainWindow();
 
-    virtual void closeEvent(QCloseEvent *event) override;
+    virtual void closeEvent(QCloseEvent* event) override;
+
     QListWidgetItem getTask() const;
 
 private:
     Ui::MainWindow* ui;
 
-    Notification       notification;
-    QStandardItemModel tasks;
+    Notification        notification;
+    QStandardItemModel* tasks;
 
 private slots:
     void addTask();
-    void showContextMenu(const QModelIndex&  index);
+    void showContextMenu(const QPoint& pos);
     void setTaskReminder();
 
 };

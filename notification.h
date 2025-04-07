@@ -9,12 +9,12 @@
 #include <QPixmap>
 #include <QApplication>
 
-class Notification : public QMainWindow
+class Notification : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit Notification(QWidget *parent = nullptr);
+    explicit Notification();
     ~Notification();
 
     bool isTrayIconVisible() const;
