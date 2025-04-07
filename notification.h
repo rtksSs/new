@@ -31,6 +31,9 @@ private slots:
     void showNotification() const;
     void exitApplication() const;
 
+signals:
+    void requestShow();
+    void requestExit();
 };
 
 #endif // NOTIFICATION_H
