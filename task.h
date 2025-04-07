@@ -11,6 +11,7 @@ public:
     explicit Task(QString description);
 
     QString description() const;
+    void setRemindTime(QDateTime& time);
     bool isCompleted() const;
 
 private:

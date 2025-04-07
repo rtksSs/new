@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget* parent)
     connect(ui->add_button, &QPushButton::clicked, this, &MainWindow::addTask);
     connect(ui->task_input, &QLineEdit::returnPressed, this, &MainWindow::addTask);
 
-    // Контеккстное меню при нажатии ПКМ на задачу
+    // Контекстное меню при нажатии ПКМ на задачу
     ui->tasks_list->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->tasks_list, &QWidget::customContextMenuRequested, this, &MainWindow::showContextMenu);
 
@@ -81,4 +81,5 @@ void MainWindow::setTaskReminder()
 {
     Dialog dialog;
     dialog.exec();
+
 }

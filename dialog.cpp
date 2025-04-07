@@ -1,5 +1,8 @@
 #include "dialog.h"
 #include "ui_dialog.h"
+#include "task.h"
+
+#include <QMessageBox>
 
 Dialog::Dialog(QWidget *parent)
     : QDialog(parent)
@@ -25,6 +28,14 @@ Dialog::~Dialog()
 
 void Dialog::on_apply_button_clicked()
 {
+    QDateTime remind_time(
+        ui->calendar->selectedDate(), QTime(ui->hours_spin_box->value(), ui->minutes_spin_box->value()));
+
+    if (remind_time < QDateTime::currentDateTime()) {
+        QMessageBox::warning(this, "Ошибка", "Установите корректное время");
+        return;
+    }
+
 
 }
 
