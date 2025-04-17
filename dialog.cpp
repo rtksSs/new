@@ -1,6 +1,5 @@
 #include "dialog.h"
 #include "ui_dialog.h"
-#include "task.h"
 
 #include <QMessageBox>
 
@@ -19,6 +18,9 @@ Dialog::Dialog(QWidget *parent)
     ui->minutes_spin_box->setRange(0, 59);
     ui->minutes_spin_box->setValue(QTime::currentTime().minute());
     ui->minutes_spin_box->setAlignment(Qt::AlignCenter);
+
+    connect(ui->button_box, &QDialogButtonBox::accepted, this, &QDialog::accept);
+    connect(ui->button_box, &QDialogButtonBox::rejected, this, &QDialog::reject);
 }
 
 Dialog::~Dialog()
@@ -26,21 +28,11 @@ Dialog::~Dialog()
     delete ui;
 }
 
-void Dialog::on_apply_button_clicked()
+QDateTime Dialog::getRemindTime() const
 {
     QDateTime remind_time(
         ui->calendar->selectedDate(), QTime(ui->hours_spin_box->value(), ui->minutes_spin_box->value()));
 
-    if (remind_time < QDateTime::currentDateTime()) {
-        QMessageBox::warning(this, "Ошибка", "Установите корректное время");
-        return;
-    }
-
-
-}
-
-void Dialog::on_cancel_button_clicked()
-{
-    Dialog::close();
+    return remind_time;
 }
 

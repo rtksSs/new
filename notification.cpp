@@ -1,8 +1,10 @@
 #include "notification.h"
-//#include "mainwindow.h"
+#include "mainwindow.h"
+#include "task.h"
 
-Notification::Notification()
-    : icon_img(32, 32)
+Notification::Notification(MainWindow* window)
+    : main_window(window)
+    , icon_img(32, 32)
 {
     // Заполнение изображения иконки цветом
     icon_img.fill(Qt::red);
@@ -15,21 +17,25 @@ Notification::Notification()
     tray_icon->setVisible(true);
 
     // Инициализация контекстного меню
-    //context_menu = new QMenu();
-    //context_menu->addAction("Show", this, &MainWindow::show);
-    //context_menu->addAction("Exit", this, &Notification::exitApplication);
+    context_menu = new QMenu();
+    context_menu->addAction("Show", this, [window]
+                                        {
+                                        window->show();
+                                        });
+    context_menu->addAction("Exit", this, &Notification::exitApplication);
 
     // Установка и подключение контекстного меню
-    //tray_icon->setContextMenu(context_menu);
-    //connect(tray_icon, &QSystemTrayIcon::activated, this, &Notification::showContextMenu);
+    tray_icon->setContextMenu(context_menu);
+    connect(tray_icon, &QSystemTrayIcon::activated, this, &Notification::showContextMenu);
 
     // Инициализация таймера
     timer = new QTimer{this};
-    // Подключение таймера (вывод уведомления по истечении времени таймера)
-    //connect(timer, &QTimer::timeout, this, &Notification::showNotification);
+
+    // Подключение таймера (проверка всех задач раз в 1 сек.)
+    connect(timer, &QTimer::timeout, this, &Notification::checkReminders);
 
     // Запуск таймера
-    timer->start(10000);
+    timer->start(1000);
 }
 
 Notification::~Notification()
@@ -45,20 +51,44 @@ bool Notification::isTrayIconVisible() const
     return false;
 }
 
+void Notification::checkReminders()
+{
+    for (int index = 0; index < main_window->tasksCount(); index++)
+    {
+        auto* task = dynamic_cast<Task*>(main_window->getTasks()->item(index));
+
+        if (!task)
+            continue;
+
+        if (!task->dateTime().isValid())
+            continue;
+
+        if (task->dateTime() <= QDateTime::currentDateTime() && !task->isNotified()) {
+            showNotification(index);
+            task->setNotified(true);
+        }
+    }
+}
+
 
 void Notification::showContextMenu(QSystemTrayIcon::ActivationReason reason) const
 {
     if (reason == QSystemTrayIcon::ActivationReason::DoubleClick) {
         context_menu->show();
     }
+
+    else if (reason == QSystemTrayIcon::ActivationReason::Context) {
+        context_menu->show();
+    }
 }
 
-void Notification::showNotification() const
+void Notification::showNotification(int index) const
 {
-    tray_icon->showMessage("aaa", "aaa", QSystemTrayIcon::Information, 1000);
+    tray_icon->showMessage("Напоминание", main_window->getTaskDescription(index), QSystemTrayIcon::Information, 3000);
 }
 
 void Notification::exitApplication() const
 {
     QApplication::exit();
 }
+

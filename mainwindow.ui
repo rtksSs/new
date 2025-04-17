@@ -120,6 +120,12 @@
    <property name="text">
     <string>Сохранить</string>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+     <bold>false</bold>
+    </font>
+   </property>
   </action>
   <action name="delete_action">
    <property name="icon">
@@ -127,6 +133,12 @@
    </property>
    <property name="text">
     <string>Удалить</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+     <bold>false</bold>
+    </font>
    </property>
   </action>
  </widget>

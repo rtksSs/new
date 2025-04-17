@@ -11,11 +11,15 @@ public:
     explicit Task(QString description);
 
     QString description() const;
+    QDateTime dateTime() const;
     void setRemindTime(QDateTime& time);
     bool isCompleted() const;
+    bool isNotified() const;
+    void setNotified(bool notif);
 
 private:
     QDateTime remind_time;
+    bool      is_notified;
 
 };
 
