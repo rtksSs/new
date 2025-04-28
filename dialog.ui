@@ -61,12 +61,12 @@
       <property name="maximumSize">
        <size>
         <width>70</width>
-        <height>45</height>
+        <height>60</height>
        </size>
       </property>
       <property name="font">
        <font>
-        <pointsize>12</pointsize>
+        <pointsize>16</pointsize>
         <bold>true</bold>
        </font>
       </property>
@@ -114,7 +114,7 @@
       <property name="maximumSize">
        <size>
         <width>70</width>
-        <height>45</height>
+        <height>60</height>
        </size>
       </property>
       <property name="sizeIncrement">
@@ -131,7 +131,7 @@
       </property>
       <property name="font">
        <font>
-        <pointsize>12</pointsize>
+        <pointsize>16</pointsize>
         <italic>false</italic>
         <bold>true</bold>
         <underline>false</underline>
@@ -171,11 +171,26 @@
      <height>251</height>
     </rect>
    </property>
+   <property name="contextMenuPolicy">
+    <enum>Qt::ContextMenuPolicy::NoContextMenu</enum>
+   </property>
    <property name="toolTip">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="toolTipDuration">
+    <number>0</number>
+   </property>
+   <property name="autoFillBackground">
+    <bool>true</bool>
    </property>
    <property name="verticalHeaderFormat">
     <enum>QCalendarWidget::VerticalHeaderFormat::NoVerticalHeader</enum>
+   </property>
+   <property name="navigationBarVisible">
+    <bool>true</bool>
+   </property>
+   <property name="dateEditEnabled">
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QDialogButtonBox" name="button_box">

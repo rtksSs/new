@@ -38,8 +38,11 @@ bool Task::isNotified() const
     return is_notified;
 }
 
-void Task::setNotified(bool notif)
+void Task::setNotified(bool notif, bool save_to_file)
 {
-    is_notified = notif;
+    this->is_notified = notif;
+    if (save_to_file) {
+        emit emitDataChanged();
+    }
 }
 

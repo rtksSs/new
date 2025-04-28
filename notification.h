@@ -19,7 +19,7 @@ public:
     explicit Notification(MainWindow* window);
     ~Notification();
 
-    bool isTrayIconVisible() const;
+    bool             isTrayIconVisible() const;
 
 private:
     MainWindow*      main_window;
@@ -29,12 +29,12 @@ private:
     QIcon            icon;
     QPixmap          icon_img;
 
-    void checkReminders();
+    void             checkReminders();
 
 private slots:
-    void showContextMenu(QSystemTrayIcon::ActivationReason iReason) const;
-    void showNotification(int index) const;
-    void exitApplication() const;
+    void             showContextMenu(QSystemTrayIcon::ActivationReason iReason) const;
+    void             showNotification(int index) const;
+    void             exitApplication() const;
 
 };
 

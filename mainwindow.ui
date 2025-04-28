@@ -77,7 +77,16 @@
          </size>
         </property>
         <property name="text">
-         <string>+</string>
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset theme="QIcon::ThemeIcon::ListAdd"/>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>30</width>
+          <height>20</height>
+         </size>
         </property>
        </widget>
       </item>
@@ -139,6 +148,14 @@
      <pointsize>10</pointsize>
      <bold>false</bold>
     </font>
+   </property>
+  </action>
+  <action name="open_settings_action">
+   <property name="icon">
+    <iconset theme="QIcon::ThemeIcon::DocumentProperties"/>
+   </property>
+   <property name="text">
+    <string>Открыть...</string>
    </property>
   </action>
  </widget>

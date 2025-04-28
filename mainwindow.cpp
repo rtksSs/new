@@ -8,6 +8,8 @@
 #include <QJsonObject>
 #include <QFile>
 #include <QJsonDocument>
+#include <QInputDialog>
+#include <QCloseEvent>
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
@@ -42,6 +44,9 @@ MainWindow::MainWindow(QWidget* parent)
 
     // Загрузка задач при запуске
     loadTasks();
+
+    // Заголовок окна
+    setWindowTitle("To-Do List");
 }
 
 MainWindow::~MainWindow()
@@ -110,6 +115,7 @@ void MainWindow::saveTasks()
         task_obj["description"] = task->description();
         task_obj["is_completed"] = task->isCompleted();
         task_obj["remind_time"] = task->dateTime().toString(Qt::ISODate);
+        task_obj["is_notified"] = task->isNotified();
 
         tasks_array.append(task_obj);
     }
@@ -148,6 +154,8 @@ void MainWindow::loadTasks()
         if (remind_time.isValid()) {
             task->setRemindTime(remind_time);
         }
+
+        task->setNotified(task_obj["is_notified"].toBool(), false);
 
         tasks->appendRow(task);
     }
@@ -239,4 +247,3 @@ void MainWindow::on_delete_action_triggered()
         warning.close();
     }
 }
-

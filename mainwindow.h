@@ -4,21 +4,7 @@
 #include "notification.h"
 
 #include <QMainWindow>
-#include <QLineEdit>
-#include <QLabel>
-#include <QSystemTrayIcon>
-#include <QCloseEvent>
-#include <QListWidget>
-#include <QList>
-#include <QMenu>
-#include <QHBoxLayout>
-#include <QSpinBox>
-#include <QCalendarWidget>
-#include <QDialogButtonBox>
-#include <QVBoxLayout>
 #include <QStandardItemModel>
-#include <QDialog>
-#include <QMessageBox>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -54,7 +40,7 @@ private slots:
     void                addTask();
     void                showContextMenu(const QPoint& pos);
 
-    void on_save_action_triggered();
-    void on_delete_action_triggered();
+    void                on_save_action_triggered();
+    void                on_delete_action_triggered();
 };
 #endif // MAINWINDOW_H

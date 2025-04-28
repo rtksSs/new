@@ -29,3 +29,8 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+win32 {
+    RC_FILE = icon.rc
+    QMAKE_POST_LINK += $$quote(cmd /c copy /Y $$PWD\\desktopicon.ico $$OUT_PWD\\ &)
+}

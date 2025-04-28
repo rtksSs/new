@@ -6,8 +6,8 @@ Notification::Notification(MainWindow* window)
     : main_window(window)
     , icon_img(32, 32)
 {
-    // Заполнение изображения иконки цветом
-    icon_img.fill(Qt::red);
+    // Загрузка изображения
+    icon_img.load("icon.png");
 
     // Установка изображение на иконку
     icon.addPixmap(icon_img);
@@ -18,11 +18,11 @@ Notification::Notification(MainWindow* window)
 
     // Инициализация контекстного меню
     context_menu = new QMenu();
-    context_menu->addAction("Show", this, [window]
+    context_menu->addAction("Открыть", this, [window]
                                         {
                                         window->show();
                                         });
-    context_menu->addAction("Exit", this, &Notification::exitApplication);
+    context_menu->addAction("Выйти", this, &Notification::exitApplication);
 
     // Установка и подключение контекстного меню
     tray_icon->setContextMenu(context_menu);
@@ -84,7 +84,13 @@ void Notification::showContextMenu(QSystemTrayIcon::ActivationReason reason) con
 
 void Notification::showNotification(int index) const
 {
-    tray_icon->showMessage("Напоминание", main_window->getTaskDescription(index), QSystemTrayIcon::Information, 3000);
+
+    tray_icon->showMessage("Напоминание", main_window->getTaskDescription(index), QSystemTrayIcon::Information, 5000);
+
+    connect(tray_icon, &QSystemTrayIcon::messageClicked, this, [this]()
+                                                            {
+                                                                main_window->show();
+                                                            }, Qt::SingleShotConnection);
 }
 
 void Notification::exitApplication() const

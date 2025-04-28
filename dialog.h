@@ -2,6 +2,9 @@
 #define DIALOG_H
 
 #include <QDialog>
+#include <QEvent>
+
+
 
 namespace Ui {
 class Dialog;
@@ -15,7 +18,7 @@ public:
     explicit Dialog(QWidget *parent = nullptr);
     ~Dialog();
 
-    QDateTime getRemindTime() const;
+    QDateTime   getRemindTime() const;
 
 private:
     Ui::Dialog* ui;
